@@ -1,5 +1,6 @@
 package br.com.foguete.swapi.adapter.in;
 
+import br.com.foguete.swapi.adapter.out.dto.FilmsDto;
 import br.com.foguete.swapi.adapter.out.dto.PersonDto;
 import br.com.foguete.swapi.adapter.out.dto.PlanetsDto;
 import br.com.foguete.swapi.core.SwapiPortIn;
@@ -61,4 +62,11 @@ public class HttpPortIn {
     }
 
 
+@GetMapping("/films")
+    public ResponseEntity<List<FilmsDto>> findFilms(){
+    List<FilmsDto> films = this.swapiPortIn.findFilms();
+
+    return ResponseEntity.ok(films);
+
+}
 }

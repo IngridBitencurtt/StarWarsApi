@@ -1,16 +1,16 @@
 package br.com.foguete.swapi.adapter.out;
 
+import br.com.foguete.swapi.adapter.config.SwapConfig;
+import br.com.foguete.swapi.adapter.out.dto.FilmsDto;
 import br.com.foguete.swapi.adapter.out.dto.PersonDto;
 import br.com.foguete.swapi.adapter.out.dto.PlanetsDto;
 import br.com.foguete.swapi.adapter.out.dto.SwapiData;
-import br.com.foguete.swapi.adapter.out.dto.SwapiData2;
 import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.List;
 
@@ -18,45 +18,42 @@ import java.util.List;
 public class HttpSwapiAdapterOut implements SwapiPortOut {
 
     private final RestTemplate restTemplate;
+    private final SwapConfig swapConfig;
 
-    public HttpSwapiAdapterOut(RestTemplateBuilder restTemplateBuilder) {
+    public HttpSwapiAdapterOut(RestTemplateBuilder restTemplateBuilder, SwapConfig swapConfig) {
         this.restTemplate = restTemplateBuilder.build();
+        this.swapConfig = swapConfig;
     }
 
     @Override
-    //o método faz uma chamada para a API SWAPI,
-    // recupera informações sobre pessoas e
-    // retorna uma lista de objetos PersonDto que representam essas pessoas.
     public List<PersonDto> findPeople() {
-
-        ResponseEntity<SwapiData<PersonDto>> exchange = this.restTemplate.exchange("https://swapi.dev/api/people",
+        String uriString = swapConfig.getPeopleUri();
+        ResponseEntity<SwapiData<PersonDto>> exchange = restTemplate.exchange(uriString,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<>() {});
+                new ParameterizedTypeReference<>() {
+                });
 
         return exchange.getBody().getResults();
     }
 
     @Override
     public SwapiData<PersonDto> findPeople(Integer page) {
-        String uriString = UriComponentsBuilder
-                .fromHttpUrl("https://swapi.dev/api/people")
-                .queryParam("page", page)
-                .build()
-                .toUriString();
+        String uriString = swapConfig.getPeopleWithPage(page);
+        ResponseEntity<SwapiData<PersonDto>> response = this.restTemplate
+                .exchange(uriString,
+                        HttpMethod.GET,
+                        null,
+                        new ParameterizedTypeReference<>() {
+                        });
 
-        ResponseEntity<SwapiData<PersonDto>> exchange = this.restTemplate.exchange(uriString,
-                HttpMethod.GET,
-                null,
-                new ParameterizedTypeReference<>() {});
-
-        return exchange.getBody();
+        return response.getBody();
     }
 
     @Override
     public PersonDto findPerson(String numberPerson) {
-        var link = "https://swapi.dev/api/people/" + numberPerson;
-       ResponseEntity<PersonDto> person = this.restTemplate.exchange(link,
+        var uriString = swapConfig.getPeoplePathById(numberPerson);
+        ResponseEntity<PersonDto> person = this.restTemplate.exchange(uriString,
                 HttpMethod.GET,
                 null,   //body e header como n estamos passando nd é null
                 PersonDto.class);
@@ -65,10 +62,14 @@ public class HttpSwapiAdapterOut implements SwapiPortOut {
 
     @Override
     public List<PlanetsDto> findPlanets() {
-        ResponseEntity<SwapiData<PlanetsDto>> exchange = this.restTemplate.exchange("https://swapi.dev/api/planets",
+
+        var uriString = swapConfig.getPlanetsUri();
+
+        ResponseEntity<SwapiData<PlanetsDto>> exchange = this.restTemplate.exchange(uriString,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<>() {});
+                new ParameterizedTypeReference<>() {
+                });
 
         return exchange.getBody().getResults();
 
@@ -76,7 +77,8 @@ public class HttpSwapiAdapterOut implements SwapiPortOut {
 
     @Override
     public PlanetsDto findplanet(String planetId) {
-        ResponseEntity<PlanetsDto> planet = this.restTemplate.exchange("https://swapi.dev/api/planets/" + planetId,
+        var uriString = swapConfig.getPlanetsById(planetId);
+        ResponseEntity<PlanetsDto> planet = this.restTemplate.exchange(uriString,
                 HttpMethod.GET,
                 null,   //body e header como n estamos passando nd é null
                 PlanetsDto.class);
@@ -85,18 +87,26 @@ public class HttpSwapiAdapterOut implements SwapiPortOut {
 
     @Override
     public SwapiData<PlanetsDto> findPlanet(Integer page) {
-        String uriString = UriComponentsBuilder
-                .fromHttpUrl("https://swapi.dev/api/planets")
-                .queryParam("page", page)
-                .build()
-                .toUriString();
+        var uriString = swapConfig.getPlanetsWithPage(page);
 
         ResponseEntity<SwapiData<PlanetsDto>> exchange = this.restTemplate.exchange(uriString,
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<>() {});
+                new ParameterizedTypeReference<>() {
+                });
 
         return exchange.getBody();
+    }
+
+    @Override
+    public List<FilmsDto> findFilms() {
+        String uriString = swapConfig.getFilmsUri();
+        ResponseEntity<SwapiData<FilmsDto>> exchange = restTemplate.exchange(uriString,
+                HttpMethod.GET,
+                null,
+                new ParameterizedTypeReference<>() {});
+
+        return exchange.getBody().getResults();
     }
 
 

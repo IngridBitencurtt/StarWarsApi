@@ -1,6 +1,7 @@
 package br.com.foguete.swapi.core;
 
 import br.com.foguete.swapi.adapter.out.SwapiPortOut;
+import br.com.foguete.swapi.adapter.out.dto.FilmsDto;
 import br.com.foguete.swapi.adapter.out.dto.PersonDto;
 import br.com.foguete.swapi.adapter.out.dto.PlanetsDto;
 import br.com.foguete.swapi.adapter.out.dto.SwapiData;
@@ -80,5 +81,11 @@ public class SwapiCore implements SwapiPortIn {
         } while (!isNull(swapiData.getNext()));
 
         return peopleName;
+    }
+
+    @Override
+    public List<FilmsDto> findFilms() {
+        return this.swapiPortOut.findFilms();
+
     }
 }

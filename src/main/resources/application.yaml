@@ -1,2 +1,13 @@
 server:
   port: 8081
+logging:
+  level:
+    org.springframework.web.client.RestTemplate: debug
+swapi:
+  host: https://swapi.dev/api
+  paths:
+    people: /people
+    planets: /planets
+    films: /films
+
+

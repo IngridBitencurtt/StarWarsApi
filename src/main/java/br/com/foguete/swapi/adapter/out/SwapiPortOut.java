@@ -1,5 +1,6 @@
 package br.com.foguete.swapi.adapter.out;
 
+import br.com.foguete.swapi.adapter.out.dto.FilmsDto;
 import br.com.foguete.swapi.adapter.out.dto.PersonDto;
 import br.com.foguete.swapi.adapter.out.dto.PlanetsDto;
 import br.com.foguete.swapi.adapter.out.dto.SwapiData;
@@ -18,4 +19,6 @@ public interface SwapiPortOut {
     PlanetsDto findplanet(String planetId);
 
     SwapiData<PlanetsDto> findPlanet(Integer page);
+
+    List<FilmsDto> findFilms();
 }
