@@ -7,7 +7,6 @@ import br.com.foguete.swapi.core.SwapiPortIn;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -68,5 +67,19 @@ public class HttpPortIn {
 
     return ResponseEntity.ok(films);
 
+
+
 }
+@PostMapping("/sync-names")
+    public ResponseEntity<Void> syncNames(){
+        this.swapiPortIn.syncNames();
+        return ResponseEntity.noContent().build();
+}
+
+    @PostMapping("/sync-names-dice")
+    public ResponseEntity<Void> syncNamesDice(){
+        this.swapiPortIn.syncNamesDice();
+        return ResponseEntity.noContent().build();
+    }
+
 }

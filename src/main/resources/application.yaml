@@ -10,4 +10,14 @@ swapi:
     planets: /planets
     films: /films
 
+rpgProject:
+  host: http://localhost:8080/rpg/v1/personagem
+  path:
+      random: /random
+      random-dice: /random-dice
+  playerId: 90f59b5a-13c4-4636-9008-c4e3aa2fb167
+
+
+
+
 

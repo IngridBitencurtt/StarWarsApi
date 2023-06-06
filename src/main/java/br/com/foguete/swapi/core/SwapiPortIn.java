@@ -19,4 +19,8 @@ public interface SwapiPortIn {
     List<String> findPeopleName();
 
     List<FilmsDto> findFilms();
+
+    void syncNames();
+
+    void syncNamesDice();
 }
