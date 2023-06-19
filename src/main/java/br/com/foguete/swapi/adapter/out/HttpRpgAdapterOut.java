@@ -11,6 +11,7 @@ import org.springframework.web.client.RestTemplate;
 public class HttpRpgAdapterOut implements RpgPortOut {
 
     private final RestTemplate restTemplate;
+
     private final RpgConfig rpgConfig;
 
     public HttpRpgAdapterOut(RestTemplateBuilder restTemplateBuilder, RpgConfig rpgConfig) {
